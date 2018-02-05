@@ -1,0 +1,34 @@
+applications:
+- gnocchi
+classes:
+- service.gnocchi.support
+parameters:
+  gnocchi:
+    server:
+      enabled: true
+      version: ${_param:gnocchi_version}
+      bind:
+        address: ${_param:single_address}
+        port: 8041
+      api:
+        auth_mode: keystone
+      identity:
+        engine: keystone
+        region: RegionOne
+        protocol: http
+        host: ${_param:single_address}
+        port: 35357
+        user: gnocchi
+        password: ${_param:keystone_gnocchi_password}
+        tenant: service
+      database:
+        engine: mysql
+        host: ${_param:single_address}
+        name: gnocchi
+        password: ${_param:mysql_gnocchi_password}
+        user: gnocchi
+      cache:
+        engine: memcached
+        members:
+        - host: ${_param:single_address}
+          port: 11211
